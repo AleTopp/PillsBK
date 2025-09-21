@@ -38,7 +38,7 @@ export const getFarmaco = (id) => {
       } else if (row === undefined) {
         resolve({error: "Farmaco does not exist."});
       } else {
-        resolve(Farmaco(row.id, row.nome, row.dosaggio, row.indicazioni, row.mesi_esclusi, row.ordine));
+        resolve(new Farmaco(row.id, row.nome, row.dosaggio, row.indicazioni, row.mesi_esclusi, row.ordine));
       }
     });
   });

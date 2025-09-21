@@ -59,7 +59,7 @@ export const getCompleteFarmaco = (id) => {
       } else {
         farmaco.assunzioni = [];
         rows.map((r) => {
-          let ass = new Assunzione(r.id, r.timestamp, ref, stato);
+          let ass = new Assunzione(r.id, r.timestamp, ref, r.stato);
           farmaco.assunzioni.push(ass);
         })
         resolve(farmaco);

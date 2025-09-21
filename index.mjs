@@ -1,16 +1,15 @@
-// import
+import cors from 'cors';
 import express from 'express';
 import morgan from 'morgan';
 import {check, validationResult} from 'express-validator';
 import {addAssunzione, addFarmaco, getCompleteFarmaco, listAssunzioni, listFarmaci} from './dao.mjs';
-import cors from 'cors';
 import { Assunzione, Farmaco } from './models.mjs';
 
-// init
+// Init
 const app = express();
 const port = 3001;
 
-// middleware
+// Middlewares
 app.use(express.json());
 app.use(morgan('dev'));
 
@@ -105,7 +104,7 @@ app.get('/api/giornata', (req, res) => {
   const nowMonth = new Date().getMonth() + 1;
   
   listFarmaci()
-    .then(farmaci => res.json(farmaci.filter((f) => !(nowMonth in f.mesi_esclusi))))
+    .then(farmaci => res.status(200).json(farmaci.filter((f) => !(nowMonth in f.mesi_esclusi))))
     .catch(() => res.status(500).end());
 })
 
@@ -143,8 +142,8 @@ app.post('/api/giornata', [
 
   await Promise.all(proms);
 
-  res.status(200).send("OK");
+  res.status(200).end();
 })
 
-// far partire il server
+// Start server
 app.listen(port, () => { console.log(`API server started at http://localhost:${port}`); });

@@ -41,7 +41,6 @@ db.exec(sql, function(err) {
     console.log("Errore durante l'init del DB: " + err);
     process.exit(1);
   } else {
-    console.log("DB inizializzato correttamente");
     db.close((err) => {
       if (err) {
         console.error("Errore chiusura DB:", err);

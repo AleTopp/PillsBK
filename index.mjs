@@ -11,7 +11,7 @@ const port = 3001;
 
 // Middlewares
 app.use(express.json());
-app.use(morgan('dev'));
+app.use(morgan(':remote-addr :method :url :status :res[content-length] - :response-time ms'));
 
 const corsOptions = {
   origin: 'http://localhost:5173',
@@ -100,13 +100,19 @@ app.get('/api/assunzioni', (req, res) => {
 });
 
 // GET /api/giornata
-app.get('/api/giornata', (req, res) => {
+app.get('/api/giornata', async (req, res) => {
   const nowMonth = new Date().getMonth() + 1;
   
-  listFarmaci()
-    .then(farmaci => res.status(200).json(farmaci.filter((f) => !(nowMonth in f.mesi_esclusi))))
-    .catch(() => res.status(500).end());
-})
+  try {
+    let farmaci = await listFarmaci();
+    farmaci = farmaci.filter((f) => !(nowMonth in f.mesi_esclusi));
+    farmaci = farmaci.sort((a, b) => a.ordine - b.ordine);
+
+    res.status(200).json(farmaci);
+  } catch (e) {
+    res.status(500).end()
+  }
+});
 
 // POST /api/giornata
 app.post('/api/giornata', [

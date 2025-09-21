@@ -85,7 +85,6 @@ export const listAssunzioni = () => {
 
           return new Assunzione(r.id, r.timestamp, f, stato);
         }));
-        console.log("AA: " + assunzioni);
         resolve(assunzioni);
       }
     });
